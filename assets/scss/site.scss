@@ -1,0 +1,21 @@
+body{
+    background: white;
+    color: aqua;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+  }
+  
+  body {
+      /*margin bottom by footer height*/
+    margin-bottom: 60px;
+  }
+  .footer{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      white-space: nowrap;
+      line-height: 60px; /*vertical center the text there*/
+  }

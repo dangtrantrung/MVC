@@ -1,0 +1,91 @@
+body{
+  background: white;
+  color: black;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    /*margin bottom by footer height*/
+  margin-bottom: 60px;
+  /* color: greenyellow; */
+}
+.footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /*vertical center the text there*/
+}
+.app-navbar{
+    background: rgba(42, 39, 39, 0.8);
+    
+}
+
+.app-navbar .text-dark {
+  color: #b9c3ce !important;
+  
+}
+
+.app-navbar .text-dark:hover{
+  color: white !important;
+}
+
+.app-navbar .navbar-brand{
+  color: #247ede !important;
+  
+}
+
+.app-navbar .navbar-brand:hover{
+  color: rgb(220, 36, 36) !important;
+}
+
+.app-navbar .dropdown-toggle{
+  border-color: aqua;
+  color: #b9c3ce !important;
+  
+}
+
+.app-navbar .dropdown-toggle:hover{
+  color: rgb(220, 36, 36) !important;
+}
+
+.contact-firstcol {
+  background-color: rgb(135, 19, 133);
+  color: white;
+  text-align: center;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.contact-firstcol h4 {
+
+  line-height: 40px;
+  font-weight: 400;
+  margin-top: 20px;
+}
+
+.contact-firstcol img{
+
+ width: 100px;
+ 
+}
+
+.formcontact  label{
+
+ 
+  font-weight: 700;
+  
+}
+
+.formcontact  .btn-primary{
+
+ 
+  font-weight: 700;
+  background-color: rgb(135, 19, 133);;
+  margin-top: 10px;
+  border-color: aqua;
+}

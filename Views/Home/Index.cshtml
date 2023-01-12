@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    //Url.RouteUrl();
+    //Url.Link();
+    //phát sinh Url trên View sử dụng:
+    //<a></a> <form></form><button></button>
+}
+<partial name="_AlertMessage"></partial>
+<div class="text-center">
+    <h1 class="display-4">Xin chào</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+@* <p>
+    @Url.ActionLink()
+</p>
+<p>
+    @Url.Action("Privacy")
+</p>
+<p>
+    @Url.Action("Privacy", new {id = 123, name="Xuanthulab"})
+</p>
+<p>
+    @Url.Action("Jupiter", "Planet", new {id = 123, name="Xuanthulab"})
+</p>
+<p>
+    @Url.Action("PlanetInfo", "Planet", new {id = 3, name="Xuanthulab"})
+</p>
+<p>
+    @Url.Action("Index", "Product", new {area="ProductManage",id=123})  
+</p>
+<p>
+    @Url.RouteUrl("default", new {action="HelloView",controller="Home",id=123,name="Xuanthulab"})
+</p> 
+*@
+
+@{
+ var routedata=new Dictionary<string,string>()
+     {
+         {"name","XuanThuLAB"},
+         {"id","3"},
+         {"abc","xyz"}
+     };
+}
+ <a asp-action="PlanetInfo" asp-controller="Planet" asp-route-id=3> Hành tinh id =3</a>
+<br>
+<a asp-action="Index" asp-controller="Home" asp-all-route-data="@routedata"
+asp-route-id=3
+asp-route-name="XuanThuLAB"
+asp-route-abc=xyz> ví dụ nhiều tham số route</a>
+<br>
+<a asp-action="Index" asp-controller="Product" asp-are="ProductManage"> ví dụ route có area</a>
+<p>
+    @Url.RouteUrl("Mars2")
+</p>
+
+<p>
+    @Url.RouteUrl("planetinfo2")
+</p>
+
+<p>
+    @Url.RouteUrl("planetinfo3")
+</p>
