@@ -1,15 +1,14 @@
-
-
-
-
 using System.Net;
 using App.ExtendMethods;
 using App.Models;
 using App.Service;
+using App.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +40,15 @@ builder.Services.AddSingleton<ProductService>(); // tạo 1 dịch vụ cho su�
 builder.Services.AddSingleton<ProductService,ProductService>(); // tạo 1 dịch vụ cho suốt app, khởi tạo đối tượng và các đối tượng kế thừa cùng kiểu này
 builder.Services.AddSingleton<PlanetService>();
 
-//add identity 
+//Add MailService
+builder.Services.AddOptions();
+var mailsetting=builder.Configuration.GetSection("MailSettings");
+builder.Services.Configure<MailSettings>(mailsetting);
+builder.Services.AddSingleton<IEmailSender,SendMailService>();
+
+// Add IdentityErrorDescriber
+builder.Services.AddSingleton<IdentityErrorDescriber,AppIdentityErrorDescriber>();
+
 
  /* builder.Services.AddIdentity<AppUser,IdentityRole> ()
                 .AddEntityFrameworkStores<MyBlogContext>()
@@ -77,19 +84,58 @@ builder.Services.Configure<IdentityOptions> (options => {
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;  // Email là duy nhất
 
-    // Cấu hình đăng nhập.
+   // Cấu hình đăng nhập.
     options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
     options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
     options.SignIn.RequireConfirmedAccount=true;
-
+    
 });
 
+//Add Google, Facebook Authentication
+/* builder.Services.AddAuthentication()
+                .AddGoogle(options=>{
+                  var gconfig=builder.Configuration.GetSection("Authentication:Google");
+                  options.ClientId=gconfig["ClientId"];
+                  options.ClientSecret=gconfig["ClientSecret"];
+                  options.CallbackPath="/dang-nhap-tu-google";
+                })
+                .AddFacebook(options=>{
+                  var Fconfig=builder.Configuration.GetSection("Authentication:Facebook");
+                  options.ClientId=Fconfig["AppId"];
+                  options.ClientSecret=Fconfig["AppSecret"];
+                  options.CallbackPath="/dang-nhap-tu-Facebook";
+                })
+; */
 //cấu hình service=> authorize, login, logout, accessdenied
 
-builder.Services.ConfigureApplicationCookie(options=>{
-  options.LoginPath="/login/";
-  options.LogoutPath="/logout/";
-  options.AccessDeniedPath="/khongduoctruycap.html";
+// Cấu hình Cookie
+builder.Services.ConfigureApplicationCookie (options => {
+    // options.Cookie.HttpOnly = true;  
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);  
+    options.LoginPath = $"/login/";                                 // Url đến trang đăng nhập
+    options.LogoutPath = $"/logout/";   
+    options.AccessDeniedPath = $"/AccessDenied/";   // Trang khi User bị cấm truy cập
+});
+
+//Dang ky DI dich vụ Appservice AppIdentityErrorDescriber
+builder.Services.AddSingleton<IdentityErrorDescriber,AppIdentityErrorDescriber>();
+
+// Trên 30 giây truy cập lại sẽ nạp lại thông tin User (Role)
+// SecurityStamp trong bảng User đổi -> nạp lại thông tin Security
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.FromSeconds(30);
+});
+
+
+//add policy manage
+builder.Services.AddAuthorization(options=>
+{
+ options.AddPolicy("ViewManageMenu",builder=>
+ {
+      builder.RequireAuthenticatedUser();
+      builder.RequireRole(App.Data.RoleName.Administrator);
+ });
 });
 
 var app = builder.Build();
