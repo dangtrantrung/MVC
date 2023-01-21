@@ -37,13 +37,30 @@ namespace App.Models
         //Fluent API
         modelbuilder.Entity<App.Models.Blog.Category>(entity=>
         {
-                 entity.HasIndex(c=>c.Slug);
+                 entity.HasIndex(c=>c.Slug)
+                       .IsUnique();
+        });
+
+        // Chỉ có thể dùng Fluent API để tạo trường khóa chính, duy nhất từ 2 propeties Key của table PostCategory
+        // không dùng Attribute key dc[Key]
+        modelbuilder.Entity<PostCategory>(entity=>
+        {
+               entity.HasKey( c=>new {c.PostID, c.CategoryID});
+        });
+
+        modelbuilder.Entity<Post>(entity=>
+        {
+          entity.HasIndex(p=>p.Slug)
+                 .IsUnique(); // index de tìm kiem cho nhanh, unique
+
         });
       }
       // public DbSet<Article> articles {get;set;}
          public DbSet<Contact> Contacts {get;set;}
+          public DbSet<App.Models.Blog.Category> Categories{get;set;}
+         public DbSet<App.Models.Blog.Post> Posts{get;set;}
 
-         public DbSet<App.Models.Blog.Category> Categories{get;set;}
+          public DbSet<App.Models.Blog.PostCategory> PostCategories{get;set;}
 
     }
 }

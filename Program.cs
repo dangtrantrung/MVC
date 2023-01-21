@@ -224,3 +224,7 @@ app.UseEndpoints(endpoints=>
 
 
 app.Run();
+
+//tạo controllers
+//dotnet aspnet-codegenerator controller -name PostController -namespace App.Areas.Blog.Controllers
+ //-outDir Areas/Blog/Controllers/ -m App.Models.Blog.Post -dc App.Models.AppDbContext -udl
