@@ -32,12 +32,13 @@ namespace App.Models.Blog
 
     public List<PostCategory>?  PostCategories { get; set; }
 
-    [Required]
+    //[Required]
     [Display(Name = "Tác giả")]
-    public string AuthorId {set; get;}
+    public string? AuthorId {set; get;}
+
     [ForeignKey("AuthorId")]
     [Display(Name = "Tác giả")]
-    public AppUser Author {set; get;}
+    public AppUser? Author {set; get;}
 
     [Display(Name = "Ngày tạo")]
     public DateTime DateCreated {set; get;}
