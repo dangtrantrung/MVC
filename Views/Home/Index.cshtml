@@ -1,4 +1,6 @@
-﻿@{
+﻿
+
+@{
     ViewData["Title"] = "Home Page";
     //Url.RouteUrl();
     //Url.Link();
@@ -35,7 +37,7 @@
 </p> 
 *@
 
-@{
+@* @{
  var routedata=new Dictionary<string,string>()
      {
          {"name","XuanThuLAB"},
@@ -50,8 +52,8 @@ asp-route-id=3
 asp-route-name="XuanThuLAB"
 asp-route-abc=xyz> ví dụ nhiều tham số route</a>
 <br>
-<a asp-action="Index" asp-controller="Product" asp-are="ProductManage"> ví dụ route có area</a>
-<p>
+<a asp-action="Index" asp-controller="Product" asp-are="ProductManage"> ví dụ route có area</a> *@
+@* <p>
     @Url.RouteUrl("Mars2")
 </p>
 
@@ -61,4 +63,20 @@ asp-route-abc=xyz> ví dụ nhiều tham số route</a>
 
 <p>
     @Url.RouteUrl("planetinfo3")
-</p>
+</p> *@
+
+
+@* <div class="summernote1"></div>
+<textarea class="summernote2"></textarea>
+
+@{
+    App.Models.Summernote summernote= new App.Models.Summernote(".summernote1");
+    App.Models.Summernote summernote2= new App.Models.Summernote(".summernote2",false);
+}
+
+<partial name ="_Summernote" model ="summernote"></partial>
+<partial name ="_Summernote" model ="summernote2"></partial> *@
+
+
+
+ 
