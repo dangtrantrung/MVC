@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
-
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -150,6 +150,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+// khi truy cập address "/contents/1.jpg" => mở file "/Uploads/1.jpg"
+app.UseStaticFiles(new StaticFileOptions()
+{
+        FileProvider=new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(),"Uploads")
+        ),
+        RequestPath="/contents"
+});
 
 app.UseRouting(); //endpoint routing middlewareapp.MapRazorPages()
 app.UseAuthentication();// xac dinh danh tinh Identity
