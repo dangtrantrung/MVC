@@ -6,57 +6,92 @@
 
 @{
     ViewData["Title"] = "Đăng nhập";
+    Layout="_LoginLayout";
 }
+<style>
+    .bg-login-image{
+        background-image:url("https://xuanthulab.net/public/img/logo.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size:contain;
+        background-color:#1b6ec2;
 
-<h1>@ViewData["Title"].</h1>
-<div class="row">
-    <div class="col-md-8">
-        <section>
-            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-                <h4>Sử dụng tài khoản đã đăng ký để đăng nhập</h4>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="UserNameOrEmail" class="control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="UserNameOrEmail" class="form-control" />
-                        <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            <label asp-for="RememberMe">
-                                <input asp-for="RememberMe" />
-                                @Html.DisplayNameFor(m => m.RememberMe)
-                            </label>
+    }
+</style>
+
+<!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome! <br> Login</h1>
+                                        
+                                    </div>
+                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <form class="user" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                                      
+                                        <div class="form-group">
+                                            <input asp-for="UserNameOrEmail" class="form-control form-control-user"
+                                             placeholder="Enter Email Address or User Name...">
+                                            <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+                                        </div>
+                                         
+                                        <div class="form-group">
+                                            <input type="password" asp-for="Password" class="form-control form-control-user"
+                                                id="exampleInputPassword" placeholder="Password">
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input asp-for="RememberMe" class="custom-control-input">
+                                                <label class="custom-control-label" asp-for="RememberMe">
+                                                 @Html.DisplayNameFor(m => m.RememberMe)
+                                                 </label>
+                                            </div>
+                                        </div>
+           
+                                            
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Login
+                                        </button>
+                                        <hr>
+                                        <a href="index.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </a>
+                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                                        </a>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" asp-action="ForgotPassword">Forgot Password?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small"  asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Create an Account!</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-primary">Đăng nhập</button>
-                    </div>
-                </div>
-                <p>
-                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Chưa có tài khoản? Đăng ký</a>
-                </p>
-                <p>
-                    <a asp-action="ForgotPassword">Quyên mật khẩu?</a>
-                </p>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-4">
+
+            </div>
+
+        </div>
+
+
+
+    @* <div class="col-md-4">
         <section>
-            <h4>Đăng nhập bằng tài khoản.</h4>
+            <h4>Đăng nhập bằng tài khoản liên kết ngoài.</h4>
             <hr />
             @{
                 var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
@@ -85,7 +120,7 @@
             }
         </section>
     </div>
-</div>
+</div> *@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

@@ -8,19 +8,22 @@
 
 @if(result.Succeeded)
 {
+  <a class="nav-link text-light" asp-action="Index" asp-controller="AdminCP" asp-area="Admin"><i class="bi bi-database-fill"></i> Quản trị WEB</a>
 @* BOOTSTRAP 5 DROPDOWN MENU: left-aligned but right aligned when large screen *@
 <div class="btn-group">
-  <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-    Manage
+  <button title="Setting" type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+    <i class="bi bi-gear-fill"></i> Manage
   </button>
   <ul class="dropdown-menu dropdown-menu-lg-end">
-    <li> <a class="dropdown-item" asp-action="Index" asp-controller="DbManage" asp-area="Database">Quản lý Database</a></li>
-    <li><a class="dropdown-item" asp-action="Index" asp-controller="Contact" asp-area="Contact">Quản lý liên hệ</a></li>
-    <li><a class="dropdown-item" asp-action="Index" asp-controller="Role" asp-area="Identity">Quản lý role (vai trò) </a></li>
-    <li><a class="dropdown-item" asp-action="Index" asp-controller="User" asp-area="Identity">Quản lý user </a></li>
-    <li> <a class="dropdown-item" asp-action="Index" asp-controller="Category" asp-area="Blog">Quản lý chuyên mục Blog</a></li>
-    <li><a class="dropdown-item" asp-action="Index" asp-controller="Post" asp-area="Blog">Quản lý bài viết Blog</a></li>
-    <li> <a target= "blank" class="dropdown-item" asp-action="Index" asp-controller="FileManager" asp-area="Files">Quản lý Files</a></li>
+    <li> <a class="dropdown-item" asp-action="Index" asp-controller="DbManage" asp-area="Database"><i class="bi bi-database-fill"></i> Database</a></li>
+    <li><a class="dropdown-item" asp-action="Index" asp-controller="Contact" asp-area="Contact"><i class="bi bi-person-lines-fill"></i> Liên hệ</a></li>
+    <li><a class="dropdown-item" asp-action="Index" asp-controller="Role" asp-area="Identity">Quản lý Role <i class="bi bi-person-fill-gear"></i> </a></li>
+    <li><a class="dropdown-item" asp-action="Index" asp-controller="User" asp-area="Identity">Quản lý User <i class="bi bi-people-fill"></i></a></li>
+    <li> <a class="dropdown-item" asp-action="Index" asp-controller="Category" asp-area="Blog">Quản lý chuyên mục Blog <i class="bi bi-list-columns"></i></a></li>
+    <li> <a class="dropdown-item" asp-action="Index" asp-controller="CategoryProduct" asp-area="Product">Quản lý chuyên mục Sản phẩm <i class="bi bi-card-list"></i></a></li>
+    <li><a class="dropdown-item" asp-action="Index" asp-controller="Post" asp-area="Blog">Quản lý bài viết Blog <i class="bi bi-newspaper"></i></a></li>
+    <li> <a class="dropdown-item" asp-action="Index" asp-controller="ProductManage" asp-area="Product">Quản lý Danh sách Sản phẩm<i class="bi bi-gift"></i></a></li>
+    <li> <a target= "blank" class="dropdown-item" asp-action="Index" asp-controller="FileManager" asp-area="Files">Quản lý Files <i class="bi bi-images"></i></a></li>
   </ul>
 </div>
 

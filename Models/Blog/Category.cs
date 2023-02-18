@@ -42,5 +42,31 @@ namespace App.Models.Blog {
 
       public Category? ParentCategory { set; get; }
 
+      public void ChildrenCategoryIDS (List<int> list, ICollection<Category> childrencates =null)
+      { 
+        if(childrencates==null)
+        { 
+          childrencates=this.CategoryChildren;
+        }
+           foreach (Category category in childrencates)
+           {
+               list.Add(category.Id);
+               ChildrenCategoryIDS (list, category.CategoryChildren);
+           }
+      }
+
+      public List<Category> ListParents()
+      {
+        List<Category> li = new List<Category>();
+        var parent =this.ParentCategory;
+        while (parent!=null)
+        {
+          li.Add(parent);
+          parent=parent.ParentCategory;
+        }
+        li.Reverse();
+        return li;
+      }
+
   }
 }

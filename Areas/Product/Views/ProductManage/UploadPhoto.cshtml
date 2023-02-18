@@ -1,0 +1,150 @@
+@model App.Areas.Product.Controllers.ProductManageController.UploadOneFile
+
+@{
+    Product product= ViewData["product"] as Product;
+}
+
+<h1> Upload Photo: @product.Title </h1>
+
+<form method="post" enctype="multipart/form-data">
+<label asp-for ="@Model.FileUpload"></label>
+<input asp-for ="@Model.FileUpload"/>
+<span asp-validation-for ="@Model.FileUpload"></span>
+<button class= "btn btn-primary" asp-action="UploadPhoto" asp-route-id="@product.ProductId"> Upload</button>
+
+</form>
+
+<hr>
+
+<input  class="collapse"  type="file"  id="selectfileupload"  onchange="AutoUploadPhoto()"/>
+<span class ="btn btn-primary" onclick="ClickButtonUpload()"> Uploads </span>
+
+<div id ="box-photo-upload" class="d-flex flex-wrap photo-upload" data-id="@product.ProductId">
+ @*  không dùng  server render trực tiếp các photos of product mà 
+ sử dụng phương pháp giản tải cho server:
+ 1. tạo 1 API server 
+ 2. dùng AJAX + JS để truy vấn post đến API, 
+ 3. lấy data  từ server về browser rồi dùng jquery + js để render photos trên client
+ @foreach(var photo in product.Photos) 
+  {     <div class ="photodetail w-25 p-1">
+         <img class ="w-100" src="/contents/Product/@photo.FileName"/>
+         <span class ="btn btn-danger spandelete" data-id ="@photo.Id">Delete </span>
+          </div>
+  } *@
+</div>
+
+@* //DÙNG AJAX, JS *@
+
+@section Scripts {
+  <script>
+     function AutoUploadPhoto()
+     {
+       //alert("Bạn vừa chọn một file");
+         var formData = new FormData();
+         var id =$("#box-photo-upload").data("id");
+
+           formData.append("id",id) // API action UploadPhotoAPI controller trên server sẽ nhận được formdata này
+           var sofile=document.getElementById("selectfileupload").files.length;
+           if(sofile==0) return;
+           var fileData=document.getElementById("selectfileupload").files[0];
+           formData.append("FileUpload",fileData);
+
+           var urlUploadPhoto ="@Url.Action("UploadPhotoAPI")"; 
+
+           //dùng ajax truy vấn dữ liệu đến API action controller - Listphotos - POST
+            $.ajax({
+                data:formData,
+                cache:false,
+                url:urlUploadPhoto,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                success: function (data)
+                {
+                  // xử lý dữ liệu lấy được
+                  LoadPhotos();
+                }
+                  
+              });
+          
+     }
+     function ClickButtonUpload()
+     {
+           $("#selectfileupload").click();
+     }
+        function SetClickDeletePhoto()
+          {
+            $("#box-photo-upload .photodetail span").click(function(){
+                  if(confirm("Có chắc chắn xóa ảnh?")!=true) return;
+                var spanbutton =$(this);
+                var id =spanbutton.data("id");
+                //alert(id);
+                var formData = new FormData();
+           formData.append("id",id) // API action DeletePhoto controller trên server sẽ nhận được formdata này
+           var urlDeletePhoto ="@Url.Action("DeletePhoto")"; 
+
+           //dùng ajax truy vấn dữ liệu đến API action controller - Listphotos - POST
+            $.ajax({
+                data:formData,
+                cache:false,
+                url:urlDeletePhoto,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                success: function (data)
+                {
+                  // xử lý dữ liệu lấy được
+                  LoadPhotos();
+                }
+                  
+              });
+          });
+          
+          }
+
+      function LoadPhotos()
+      {
+           var box =$("#box-photo-upload");
+           var productID=box.data("id");
+           console.log("productID= "+productID);
+           box.empty();
+           var formData = new FormData();
+           formData.append("id",productID) // API action controller trên server sẽ nhận được formdata này
+           var urlListPhoto ="@Url.Action("ListPhotos")";
+
+           //dùng ajax truy vấn dữ liệu đến API action controller - Listphotos - POST
+           $.ajax({
+              data:formData,
+              cache:false,
+              url:urlListPhoto,
+              type: "POST",
+              contentType: false,
+              processData: false,
+              success: function (data)
+              {
+                // xử lý dữ liệu lấy được
+                console.log(data);
+                data.photos.forEach(function(item){
+                   //console.log(item.id);
+                   //console.log(item.path);
+
+                   var e=$('<div class ="photodetail w-25 p-1">'
+                  
+                    +'<img class ="w-100" src="'+item.path+'"/>'
+                    + '<span class ="btn btn-danger spandelete" data-id ="'+item.id+'">Delete </span> </div>'
+                    );
+                    box.append(e);
+                });
+                   SetClickDeletePhoto();
+              }
+           });
+           
+      }
+      
+
+      $(document).ready(function()
+      {
+        LoadPhotos();
+      });
+  </script>
+}

@@ -1,0 +1,16 @@
+@model App.Models.Product.Product
+
+@{
+    ViewData["Title"] = "XÓA SẢN PHẨM";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Bạn có chắc chắn muốn xóa sản phẩm không?</h3>
+<div>
+     <form asp-action="Delete">
+        <input type="hidden" asp-for="ProductId" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Danh sách sản phẩm </a>
+    </form>
+</div>

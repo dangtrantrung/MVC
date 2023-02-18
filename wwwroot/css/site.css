@@ -21,7 +21,7 @@ body {
     line-height: 60px; /*vertical center the text there*/
 }
 .app-navbar{
-    background: rgba(42, 39, 39, 0.8);
+    background: rgba(4, 34, 89, 0.8);
     
 }
 
@@ -35,17 +35,17 @@ body {
 }
 
 .app-navbar .navbar-brand{
-  color: #247ede !important;
+  color: #f9fbfc !important;
   
 }
 
 .app-navbar .navbar-brand:hover{
-  color: rgb(220, 36, 36) !important;
+  color: rgb(66, 64, 68) !important;
 }
 
 .app-navbar .dropdown-toggle{
-  border-color: aqua;
-  color: #b9c3ce !important;
+  border-color: /* aqua */ transparent !important;
+  color: #edeff2 !important;
   
 }
 
@@ -54,7 +54,7 @@ body {
 }
 
 .contact-firstcol {
-  background-color: rgb(135, 19, 133);
+  background-color: rgba(4, 34, 89, 0.8);;
   color: white;
   text-align: center;
   border-top-left-radius: 15px;
@@ -85,7 +85,71 @@ body {
 
  
   font-weight: 700;
-  background-color: rgb(135, 19, 133);;
+  background-color: rgba(4, 34, 89, 0.8);
   margin-top: 10px;
   border-color: aqua;
+}
+
+.app-footer {
+  background-color: rgba(14, 14, 15, 0.8);
+  margin-top: 10px;
+  text-align: center;
+  color: rgb(237, 240, 240);
+}
+.categorysidebar ul li 
+  {
+    list-style-type: none;
+    padding-left: 10px;
+  }
+.categorysidebar a{
+  text-decoration: none;
+}
+             
+.categorysidebar a:hover{
+  color: rgb(217, 17, 17);
+}
+.categorysidebar .active{
+  color: rgb(217, 17, 17);
+}
+.categorysidebar > ul > li >a
+{
+  font-weight: bold;
+}
+
+h3 {
+  text-transform: uppercase;
+  font-size: 1.3em;
+  border-bottom: 1px solid blue;
+  padding-bottom: 10px;
+}
+
+.breadcrumblink {
+  background-color: #eff3f7 !important;
+  line-height: 40px;
+  font-weight: 400;
+  text-align: center;
+  border-radius: 5px;
+}
+.detailpost > h1 {
+   font-weight: 300;
+}
+.detailpost .sapo  {
+  font-weight: 500;
+  font-style: italic;
+}
+.detailpost > img {
+  max-width: 100%;
+}
+.photodetail {
+  position: relative;
+}
+.photodetail > span {
+  position: absolute;
+  bottom:50%;
+  left: 50%;
+  display: none;
+}
+.photodetail:hover .spandelete 
+{
+    display: block;
 }

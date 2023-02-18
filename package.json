@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/dangtrantrung/MVC#readme",
   "dependencies": {
+    "bootstrap-icons": "^1.10.3",
     "gulf": "^5.0.3",
     "gulp-concat": "^2.6.1",
     "gulp-cssmin": "^0.2.0",

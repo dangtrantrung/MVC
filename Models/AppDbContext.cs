@@ -2,6 +2,7 @@ using App.Models.Contacts;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using App.Models.Blog;
+using App.Models.Product;
 
 namespace App.Models
 {
@@ -54,6 +55,26 @@ namespace App.Models
                  .IsUnique(); // index de tìm kiem cho nhanh, unique
 
         });
+         //Fluent API
+        modelbuilder.Entity<CategoryProduct>(entity=>
+        {
+                 entity.HasIndex(c=>c.Slug)
+                       .IsUnique();
+        });
+
+        // Chỉ có thể dùng Fluent API để tạo trường khóa chính, duy nhất từ 2 propeties Key của table PostCategory
+        // không dùng Attribute key dc[Key]
+        modelbuilder.Entity<ProductCategoryProduct>(entity=>
+        {
+               entity.HasKey( c=>new {c.ProductID, c.CategoryID});
+        });
+
+        modelbuilder.Entity<App.Models.Product.Product>(entity=>
+        {
+          entity.HasIndex(p=>p.Slug)
+                 .IsUnique(); // index de tìm kiem cho nhanh, unique
+
+        });
       }
       // public DbSet<Article> articles {get;set;}
          public DbSet<Contact> Contacts {get;set;}
@@ -61,6 +82,11 @@ namespace App.Models
          public DbSet<App.Models.Blog.Post> Posts{get;set;}
 
           public DbSet<App.Models.Blog.PostCategory> PostCategories{get;set;}
+          public DbSet<App.Models.Product.CategoryProduct> CategoryProducts{get;set;}
+         public DbSet<App.Models.Product.Product> ProductS{get;set;}
+
+          public DbSet<App.Models.Product.ProductCategoryProduct> ProductCategoryProducts{get;set;}
+          public DbSet<App.Models.Product.ProductPhoto> ProductPhotos{get;set;}
 
     }
 }

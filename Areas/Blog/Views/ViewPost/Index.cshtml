@@ -1,0 +1,81 @@
+@using App.Components
+@model List<Post>
+@{
+    List<Category> categories= ViewBag.categories as List<Category>;
+    Category category =ViewBag.category as Category;
+    ViewData["Title"] = (category!=null)?category.Title: "Bài viết trong tất cả chuyên mục";
+
+
+}
+<nav aria-label="breadcrumb" class ="breadcrumblink">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="~/">Home</a></li>
+   
+    @if(category!=null)
+    {
+      var li = category.ListParents();
+       @foreach (var l in li)
+      {
+        <li class="breadcrumb-item">
+           <a asp-action="Index" asp-route-categoryslug="@l.Slug"> @l.Title</a>
+        </li>
+      }
+    }
+  </ol>
+</nav>
+
+<h1> @ViewData["Title"]</h1>
+@if(category!=null)
+{
+      <p> @Html.Raw(category.Content) </p>
+}
+else{
+    <p> Bài viết trong tất cả chuyên mục....</p>
+}
+<hr>
+@foreach (var post in Model)
+{
+   <!-- Media object -->
+<div class="d-flex border-bottom mb-3 pd-3">
+  <!-- Image -->
+  <img
+    src="/contents/nophoto.png"
+    alt="John Doe"
+    class="me-3 w-25 h-25 col-md-2"
+    style="width: 60px; height: 60px;"
+  />
+  <!-- Body -->
+  <div class="col-md-10">
+    <h5 class="fw-bold">
+      <a asp-controller="ViewPost" asp-action="Detail" asp-route-postslug ="@post.Slug">
+         @post.Title
+      </a>
+
+      <small class="text-muted">Posted on @post.DateCreated </small>
+    </h5>
+    <p>
+     @post.Description
+    </p>
+    <div>
+    Chủ đề:
+    <strong class="text-danger"> @post.PostCategories.FirstOrDefault()?.Category.Title</strong>
+    </div>
+    <div class ="author-row"> 
+      Tác giả: <strong>@post.Author.UserName </strong> |
+      Ngày cập nhật: <strong>@post.DateUpdated.ToShortDateString() </strong>
+    </div>
+  </div>
+</div>
+<!-- Media object -->
+}
+
+@section Sidebar{
+   @* <div> Đây là sidebar </div> *@
+   @await Component.InvokeAsync("App.Components.CategorySideBar", new CategorySideBar.CategorySideBarData()
+   {
+            Categories=categories,
+            level=0,
+            categoryslug=ViewBag.categoryslug
+   })
+}
+<partial name="_PagingXTL" model="@ViewBag.pagingModel" />

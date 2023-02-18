@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bogus;
 using App.Models.Blog;
+using App.Models.Product;
 
 namespace App.Areas.Database.Controllers
 {
@@ -89,6 +90,7 @@ namespace App.Areas.Database.Controllers
                   }
                 
                 SeedPostCategory();
+                SeedProductCategory();
 
                 StatusMessage="Vừa seed Bogus - PostCategpry Database";
                 return RedirectToAction("Index");
@@ -99,6 +101,7 @@ namespace App.Areas.Database.Controllers
             // Xóa các fake dta trước khi add
             _appDbContext.RemoveRange(_appDbContext.Categories.Where(c=>c.Content.Contains("[fakeData]")));
              _appDbContext.RemoveRange(_appDbContext.Posts.Where(p=>p.Content.Contains("[fakeData]")));
+            _appDbContext.SaveChanges();
             var fakerCategory =new Faker<Category>();
             int cm= 1;
             fakerCategory.RuleFor(c=>c.Title, fk=>$"CM{cm++} "+fk.Lorem.Sentence(1,2).Trim('.'));
@@ -151,6 +154,69 @@ namespace App.Areas.Database.Controllers
              }
              _appDbContext.AddRange(posts);
              _appDbContext.AddRange(post_category);
+              _appDbContext.SaveChanges();
+
+
+        }
+         private void SeedProductCategory()
+        {
+
+            // Xóa các fake dta trước khi add
+            _appDbContext.RemoveRange(_appDbContext.CategoryProducts.Where(c=>c.Content.Contains("[fakeData]")));
+             _appDbContext.RemoveRange(_appDbContext.ProductS.Where(p=>p.Content.Contains("[fakeData]")));
+            _appDbContext.SaveChanges();
+            var fakerCategory =new Faker<CategoryProduct>();
+            int cm= 1;
+            fakerCategory.RuleFor(c=>c.Title, fk=>$"Nhóm SP{cm++} "+fk.Lorem.Sentence(1,2).Trim('.'));
+            fakerCategory.RuleFor(c=>c.Content, fk=>fk.Lorem.Sentences(5) +"[fakeData]");
+            fakerCategory.RuleFor(c=>c.Slug, fk=>fk.Lorem.Slug());
+
+            var cate1=fakerCategory.Generate();
+                     var cate11=fakerCategory.Generate();
+                     var cate12=fakerCategory.Generate();
+            var cate2=fakerCategory.Generate();
+                    var cate21=fakerCategory.Generate();
+                    var cate211=fakerCategory.Generate();
+            cate11.ParentCategory=cate1;
+            cate12.ParentCategory=cate1;
+            cate21.ParentCategory=cate2;
+            cate211.ParentCategory=cate21;
+            var categories= new CategoryProduct[]{cate1,cate2,cate12,cate11,cate21,cate211,};
+            _appDbContext.CategoryProducts.AddRange(categories);
+            _appDbContext.SaveChanges();
+
+            //Tạo Product
+            var rCateIndex=new Random();
+            int bv =1;
+            var user= _userManager.GetUserAsync(this.User).Result;
+            var fakerProduct= new Faker< App.Models.Product.Product>();
+
+            fakerProduct.RuleFor(p=>p.AuthorId, f=>user.Id);
+           
+            fakerProduct.RuleFor(p=>p.Description,f=>f.Lorem.Sentences(3));
+            fakerProduct.RuleFor(p=>p.DateCreated,f=>f.Date.Between( new DateTime(2022,1,1), new DateTime(2023,1,1)));
+            fakerProduct.RuleFor(p=>p.Content,f=>f.Commerce.ProductDescription()+"[fakeData]");
+             fakerProduct.RuleFor(p=>p.Published,f=>true);
+              fakerProduct.RuleFor(p=>p.Slug,f=>f.Lorem.Slug());
+               fakerProduct.RuleFor(p=>p.Title,f=>$"SP {bv++} "+f.Commerce.ProductName());
+               fakerProduct.RuleFor(p=>p.Price,f=>int.Parse(f.Commerce.Price(500,1000,0)));
+               List<App.Models.Product.Product> products= new List<App.Models.Product.Product>();
+              List<ProductCategoryProduct> product_category= new List<ProductCategoryProduct>();
+             for(int i=0;i<40;i++)
+             {
+                 var product= fakerProduct.Generate();
+                product.DateUpdated=product.DateCreated;
+                //post.Author=(AppUser)user.UserName;
+                 products.Add(product);
+                 product_category.Add(new ProductCategoryProduct()
+                     {
+                         Product=product,
+                         Category=categories[rCateIndex.Next(5)]
+                     });
+
+             }
+             _appDbContext.AddRange(products);
+             _appDbContext.AddRange(product_category);
               _appDbContext.SaveChanges();
 
 

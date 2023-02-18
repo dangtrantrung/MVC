@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace mvc.Areas_Files_Controllers_
 {
     [Area("Files")]
-      [Authorize(Roles=RoleName.Administrator+","+RoleName.Editor)]
+    [Authorize(Roles=RoleName.Administrator+","+RoleName.Editor)]
      public class FileManagerController : Controller
     {
         [Route("/file-manager")]

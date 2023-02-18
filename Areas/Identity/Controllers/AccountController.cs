@@ -60,10 +60,7 @@ namespace App.Areas.Identity.Controllers
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                 
-                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);                
+             var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);                
                 // Tìm UserName theo Email, đăng nhập lại
                 if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
                 {
@@ -73,11 +70,13 @@ namespace App.Areas.Identity.Controllers
                         result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
                     }
                 } 
-
+                                          
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
+                     Console.WriteLine(returnUrl);
                     return LocalRedirect(returnUrl);
+                   
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -91,11 +90,14 @@ namespace App.Areas.Identity.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Không đăng nhập được.");
+                    ModelState.AddModelError("Không đăng nhập được, tên TK hoặc MK bị sai.");
                     return View(model);
                 }
-            }
-            return View(model);
+            
+            
+            //Console.WriteLine(" return View()"+ModelState.IsValid+returnUrl);
+           
+              return View();
         }
 
         // POST: /Account/LogOff
