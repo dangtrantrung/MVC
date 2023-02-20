@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.FileProviders;
+using App.Menu;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +19,16 @@ builder.Services.AddDbContext<AppDbContext>(options=>{
 string connectstring=builder.Configuration.GetConnectionString("AppMvcConnectString");
 options.UseSqlServer(connectstring);
 });
+/* builder.WebHost.ConfigureKestrel(kestrelServerOptions =>
+{
+    // ...
+    // Thiết lập lắng nghe trên cổng 8090 với IP bất kỳ
+    kestrelServerOptions.Listen(IPAddress.Any, 8090);
+}); */
 
+builder.WebHost.UseKestrel().UseUrls("http://0.0.0.0:8090", "https://0.0.0.0:8091");
 // Add services to the container.
-builder.Services.AddControllersWithViews(); // dang ky các      services theo MVC va cả Razor Pages
+builder.Services.AddControllersWithViews(); // dang ky các services theo MVC va cả Razor Pages
 builder.Services.AddRazorPages();
 builder.Services.Configure<RazorViewEngineOptions>(options=>
 {
@@ -145,6 +154,8 @@ builder.Services.AddSession(cfg => {                    // Đăng ký dịch v�
 });
 
 builder.Services.AddTransient<CartService>();
+builder.Services.AddTransient<IActionContextAccessor,ActionContextAccessor>();
+builder.Services.AddTransient<AdminSideBarService>();
 
 var app = builder.Build();
 

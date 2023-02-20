@@ -1,11 +1,12 @@
 @using Microsoft.EntityFrameworkCore
 @using System.Data
-
+@using App.Menu
 @inject AppDbContext dbContext
-
+@inject AdminSideBarService _AdminSidebarService 
 
 @{
       ViewData["Title"] ="Thông tin Db";
+      Layout="_LayoutAdmin";
       var connect=dbContext.Database.GetDbConnection();
       var dbName=connect.Database;
       var canconnect=dbContext.Database.CanConnect();
@@ -53,4 +54,13 @@
      </ul>
    <a class="btn btn-danger" asp-action="DeleteDb"> Xóa Database: @dbName</a>
    <a class="btn btn-danger" asp-action="SeedData"> SeedData: @dbName</a>
+}
+
+@{
+    _AdminSidebarService.SetActive("DbManage","Index","Database");
+}
+
+@section SideBar
+{
+  @Html.Raw(_AdminSidebarService.renderHtml())
 }

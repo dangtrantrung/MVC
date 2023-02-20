@@ -1,7 +1,10 @@
 @model IEnumerable<App.Models.Blog.Category>
+@using App.Menu
+@inject AdminSideBarService _AdminSidebarService
 
 @{
     ViewData["Title"] = "Danh sách chuyên mục Blog";
+    Layout="_LayoutAdmin";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -70,4 +73,12 @@
                }
         }
     }
+}
+@{
+    _AdminSidebarService.SetActive("Category","Index","Blog");
+}
+
+@section SideBar
+{
+  @Html.Raw(_AdminSidebarService.renderHtml())
 }

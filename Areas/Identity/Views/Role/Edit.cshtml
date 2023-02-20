@@ -1,7 +1,10 @@
 @model EditRoleModel
+@using App.Menu
+@inject AdminSideBarService _AdminSidebarService 
  
 @{
     ViewData["Title"] = "Cập nhật role";
+     Layout="_LayoutAdmin";
 }
 <h2>@ViewData["Title"]</h2>
 <partial name="_StatusMessage"></partial>
@@ -45,6 +48,14 @@
     </div>
 </div>
 
+@{
+    _AdminSidebarService.SetActive("Role","Index","Identity");
+}
+
+@section SideBar
+{
+  @Html.Raw(_AdminSidebarService.renderHtml())
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

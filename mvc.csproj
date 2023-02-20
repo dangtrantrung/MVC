@@ -32,5 +32,11 @@
     <PackageReference Include="MimeKit" Version="3.4.3" />
     <PackageReference Include="Newtonsoft.json" Version="13.0.2" />
   </ItemGroup>
+  
+  <ItemGroup> 
+    <Content Include="Uploads\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content> 
+  </ItemGroup>
 
 </Project>
